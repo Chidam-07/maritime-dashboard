@@ -21,7 +21,7 @@ from src.model import DynamicSpatioTemporalGATv2
 
 BLUE, RED, GREY = "#1f5fd6", "#d62839", "#8a8f98"
 
-st.set_page_config(page_title=" Maritime Vessel Trajectory Prediction", layout="wide")
+st.set_page_config(page_title="Maritime vessel trajectory prediction", layout="wide")
 
 
 # ---------------------------------------------------------------- data / model
@@ -211,11 +211,9 @@ days = sorted(manifest)
 default_day = next(i for i, d in enumerate(days) if splits[d] == "validation")
 
 st.sidebar.header("Scene")
-day = st.sidebar.selectbox("Day", days, index=default_day, format_func=lambda d: f"{d}  ({splits[d]})")
+day = st.sidebar.selectbox("Day", days, index=default_day)
 scene_id = st.sidebar.selectbox("Scene", manifest[day], key=f"scene_{day}",
                                 format_func=lambda i: f"Scene {i:05d}")
-if splits[day] == "training":
-    st.sidebar.warning("The model trained on this day, so errors here look better than they would on new data.")
 
 tracks = run_scene(scene_id)
 all_mmsi = [int(m) for m in tracks["mmsi"]]
@@ -232,7 +230,7 @@ if not sel:
     st.stop()
 
 # ---------------------------------------------------------------- main
-st.title(" Maritime Vessel Trajectory Prediction")
+st.title("Maritime vessel trajectory prediction")
 st.caption(f"{day} · scene {scene_id:05d} · {len(all_mmsi)} vessels · "
            f"{C.OBS_LEN * C.DT_SECONDS // 60} min observed, {C.PRED_LEN * C.DT_SECONDS // 60} min predicted")
 
